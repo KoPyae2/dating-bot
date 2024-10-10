@@ -57,8 +57,8 @@ export class MenuSceneGenerator {
                 const { chatId, name, age, city, description, photo } = result;
                 ctx.session.memberId = chatId;
 
-                if (description != constant.BUTTON_TEXT.skip) await ctx.replyWithPhoto({ url: photo }, { caption: `${name}\n${age}\n${city}\n${description}`, ...viewProfileButton });
-                else await ctx.replyWithPhoto({ url: photo }, { caption: `${name}\n${age}\n${city}`, ...viewProfileButton });
+                if (description != constant.BUTTON_TEXT.skip) await ctx.replyWithPhoto({ url: photo }, { caption: `Name - ${name}\nAge - ${age}\nCity - ${city}\nAbout - ${description}`, ...viewProfileButton });
+                else await ctx.replyWithPhoto({ url: photo }, { caption: `Name - ${name}\nAge - ${age}\nCity - ${city}`, ...viewProfileButton });
             } else {
                 await ctx.reply(constant.SCENES_TEXT.view_error);
                 return ctx.scene.enter('main');
@@ -123,11 +123,11 @@ export class MenuSceneGenerator {
             const { name, age, city, description, photo } = ctx.session;
 
             if (description != constant.BUTTON_TEXT.skip) {
-                await ctx.replyWithPhoto({ url: photo }, { caption: `${name}\n${age}\n${city}\n${description}` });
+                await ctx.replyWithPhoto({ url: photo }, { caption: `Name - ${name}\nAge - ${age}\nCity - ${city}\nAbout - ${description}` });
                 return await ctx.reply(constant.SCENES_TEXT.profile_enter);
             }
             else {
-                await ctx.replyWithPhoto({ url: photo }, { caption: `${name}\n${age}\n${city}` });
+                await ctx.replyWithPhoto({ url: photo }, { caption: `Name - ${name}\nAge - ${age}\nCity - ${city}` });
                 return await ctx.reply(constant.SCENES_TEXT.profile_enter);
             }
         });
@@ -178,11 +178,11 @@ export class MenuSceneGenerator {
                 const { name, age, city, description, photo } = data;
 
                 if (message) {
-                    if (description != constant.BUTTON_TEXT.skip) await ctx.replyWithPhoto({ url: photo }, { caption: `${constant.SCENES_TEXT.likes_enter}\n\n${name}, ${age}, ${city} - ${description}\n\n${constant.SCENES_TEXT.likes_message_for_you} ${message}`, ...likeButton });
-                    else await ctx.replyWithPhoto({ url: photo }, { caption: `${constant.SCENES_TEXT.likes_enter}\n\n${name}\n${age}\n${city}\n\n${constant.SCENES_TEXT.likes_message_for_you} ${message}`, ...likeButton });
+                    if (description != constant.BUTTON_TEXT.skip) await ctx.replyWithPhoto({ url: photo }, { caption: `${constant.SCENES_TEXT.likes_enter}\n\nName  - ${name}\nAge - ${age}\nCity - ${city}/nAbout - ${description}\n\n${constant.SCENES_TEXT.likes_message_for_you} ${message}`, ...likeButton });
+                    else await ctx.replyWithPhoto({ url: photo }, { caption: `${constant.SCENES_TEXT.likes_enter}\n\nName - ${name}\nAge - ${age}\nCity - ${city}\n\n${constant.SCENES_TEXT.likes_message_for_you} ${message}`, ...likeButton });
                 } else {
-                    if (description != constant.BUTTON_TEXT.skip) await ctx.replyWithPhoto({ url: photo }, { caption: `${constant.SCENES_TEXT.likes_enter}\n\n${name}, ${age}, ${city} - ${description}`, ...likeButton });
-                    else await ctx.replyWithPhoto({ url: photo }, { caption: `${constant.SCENES_TEXT.likes_enter}\n\n${name}\n${age}\n${city}`, ...likeButton });
+                    if (description != constant.BUTTON_TEXT.skip) await ctx.replyWithPhoto({ url: photo }, { caption: `${constant.SCENES_TEXT.likes_enter}\n\nName - ${name}\nAge - ${age}\nCity - ${city}\nAbout - ${description}`, ...likeButton });
+                    else await ctx.replyWithPhoto({ url: photo }, { caption: `${constant.SCENES_TEXT.likes_enter}\n\nName - ${name}\nAge - ${age}\nCity - ${city}`, ...likeButton });
                 }
             } else {
                 await ctx.reply(constant.SCENES_TEXT.likes_error);
@@ -219,7 +219,6 @@ export class MenuSceneGenerator {
                 return await ctx.scene.enter('likes');
             }
         });
-
         return likes;
     }
 

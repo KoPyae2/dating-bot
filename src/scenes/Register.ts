@@ -209,9 +209,9 @@ export class RegisterSceneGenerator {
             await ctx.reply(constant.SCENES_TEXT.register_approve_enter);
 
             if (ctx.session.description && ctx.session.description != constant.BUTTON_TEXT.skip) {
-                await ctx.replyWithPhoto({ url: `${ctx.session.photo}` }, { caption: `${ctx.session.name}\n${ctx.session.age}\n${ctx.session.city}\n${ctx.session.description}` });
+                await ctx.replyWithPhoto({ url: `${ctx.session.photo}` }, { caption: `Name - ${ctx.session.name}\nAge - ${ctx.session.age}\nCity - ${ctx.session.city}\nAbout - ${ctx.session.description}` });
             } else {
-                await ctx.replyWithPhoto({ url: `${ctx.session.photo}` }, { caption: `${ctx.session.name}, ${ctx.session.age}, ${ctx.session.city}` });
+                await ctx.replyWithPhoto({ url: `${ctx.session.photo}` }, { caption: `Name - ${ctx.session.name}\nAge - ${ctx.session.age}\nCity - ${ctx.session.city}` });
             }
 
             await ctx.reply(constant.SCENES_TEXT.register_approve_correct, {

@@ -40,12 +40,12 @@ export class DatabaseHelper {
     }
 
     static async saveSession({ key, data }: SaveSessionParams): Promise<void> {
-        await Session.findOneAndUpdate({ key }, { data }, { upsert: true });
+        await Session.findOneAndUpdate({ key }, { data });
     }
 
     static async loadSession({ key }: LoadSessionParams): Promise<any> {
         const session = await Session.findOne({ key });
-        return session?.data || {}; // Ensure a safe fallback to an empty object
+        return session ? session.data : {};;
     }
 
     static async checkUser({ chatId }: CheckUserParams): Promise<UserType | null> {
@@ -62,7 +62,7 @@ export class DatabaseHelper {
         return await like.save();
     }
 
-    static async checkLikes({ memberId }: CheckLikesParams):Promise<LikeType | null> {
+    static async checkLikes({ memberId }: CheckLikesParams): Promise<LikeType | null> {
         return await Like.findOne({ memberId, status: true }).exec();
     }
 
@@ -70,7 +70,7 @@ export class DatabaseHelper {
         if (ctx.session.history) {
             ctx.session.history.push(memberId);
         } else {
-            ctx.session.history = [memberId]; // Initialize history if undefined
+            ctx.session.history = [memberId];
         }
     }
 }

@@ -17,6 +17,7 @@ class TelegramService {
 
         let result = await User.find({ gender, status: true, city });
 
+
         if (!result.length) { // Check if result is empty
             result = await User.find({ gender, status: true });
         }
@@ -25,7 +26,7 @@ class TelegramService {
 
         for (const user of result) {
             if (!history.includes(user.chatId)) {
-                if (user.age >= (age - minAge) && user.age <= (age +maxAge)) {
+                if (user.age >= (age - minAge) && user.age <= (age + maxAge)) {
                     return user; // Return the first matched user
                 }
             }

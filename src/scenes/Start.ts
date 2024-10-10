@@ -16,12 +16,12 @@ export class StartSceneGenerator  {
                     const data = await DatabaseHelper.checkUser({ chatId });
                     if (data && data.status === false) {
                         await ctx.reply(constant.SCENES_TEXT.comeback_profile);
-                        // await ctx.scene.enter('main');
+                        await ctx.scene.enter('main');
                         data.status = true;
-                        // await data.save(); // Ensure save is awaited
+                        await data.save(); // Ensure save is awaited
                     } else if (data && data.status === true) {
                         await ctx.reply(constant.SCENES_TEXT.start_already_registed);
-                        // await ctx.scene.enter('main');
+                        await ctx.scene.enter('main');
                     } else {
                         await ctx.scene.enter('name');
                     }

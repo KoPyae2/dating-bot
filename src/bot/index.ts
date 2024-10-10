@@ -73,16 +73,37 @@ export const setupBot = async () => {
 
     bot.use(async (ctx: any, next) => {
         const sessionId = ctx.from?.id?.toString();
-        if (!sessionId) {
-            return next(); // Proceed to the next middleware if there is no session ID
-        }
 
-        // Load the session for the user
-        ctx.session = await DatabaseHelper.loadSession({ key: sessionId });
-        await next(); // Call the next middleware
-        // Save the session after processing the command
+        console.log('session id', sessionId);
+
+        if (!sessionId) {
+            return next();
+        }
+        ctx.session = await DatabaseHelper.loadSession({ key: sessionId + ":" + sessionId });
+        console.log(22222222, ctx.session);
+
+        await next();
         await DatabaseHelper.saveSession({ key: sessionId, data: ctx.session });
+
+        await checkAndReturn(ctx, sessionId);
+
     });
+
+    const checkAndReturn = async (ctx: any, sessionId: string) => {
+        if (ctx.session.notified) {
+            return
+        }
+        ctx.session.notified = true
+        await ctx.reply("Your previous registration has been removed. If you'd like to start over, simply type /start. We're excited to assist you!", {
+            // reply_markup: {
+            //     remove_keyboard: true
+            // }
+        });
+
+        console.log(111, ctx.session);
+
+        await DatabaseHelper.saveSession({ key: sessionId, data: ctx.session });
+    };
 
     // Start command handler
     bot.start(start);
