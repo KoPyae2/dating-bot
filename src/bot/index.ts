@@ -73,15 +73,13 @@ export const setupBot = async () => {
 
     bot.use(async (ctx: any, next) => {
         const sessionId = ctx.from?.id?.toString();
-
-        console.log('session id', sessionId);
+        console.log("someone is using",sessionId);
+        
 
         if (!sessionId) {
             return next();
         }
         ctx.session = await DatabaseHelper.loadSession({ key: sessionId + ":" + sessionId });
-        console.log(22222222, ctx.session);
-
         await next();
         await DatabaseHelper.saveSession({ key: sessionId, data: ctx.session });
 
@@ -99,8 +97,6 @@ export const setupBot = async () => {
             //     remove_keyboard: true
             // }
         });
-
-        console.log(111, ctx.session);
 
         await DatabaseHelper.saveSession({ key: sessionId, data: ctx.session });
     };
