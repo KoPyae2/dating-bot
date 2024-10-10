@@ -12,7 +12,7 @@ interface Location {
 export const extractCityFromLocation = async (location: Location): Promise<string> => {
     const { latitude, longitude } = location;
 
-    const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.GOOGLE_API_KEY}`;
+    const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.GEOCODING_API_KEY}`;
 
     try {
         const response: any = await axios.get(apiUrl);
