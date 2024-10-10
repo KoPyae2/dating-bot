@@ -264,7 +264,12 @@ export class RegisterSceneGenerator {
                 });
 
                 ctx.session.history = history;
-                console.log('new use register', ctx.session);
+                try {
+                    await ctx.telegram.sendMessage(5147071138, `New User Joined\nName - ${ctx.session.name}\nAge - ${ctx.session.age}\nGender - ${ctx.session.gender}\nCity - ${ctx.session.city}\nDesc - ${ctx.session.description}`);
+                }
+                catch (err) {
+                    console.log(err);
+                }
 
                 await ctx.scene.enter('main');
             } else if (ctx.message.text === constant.BUTTON_TEXT.change) {

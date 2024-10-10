@@ -56,6 +56,8 @@ export class MenuSceneGenerator {
             if (result) {
                 const { chatId, name, age, city, description, photo } = result;
                 ctx.session.memberId = chatId;
+                console.log(11111, ctx.session.memberId);
+
 
                 if (description != constant.BUTTON_TEXT.skip) await ctx.replyWithPhoto({ url: photo }, { caption: `Name - ${name}\nAge - ${age}\nCity - ${city}\nAbout - ${description}`, ...viewProfileButton });
                 else await ctx.replyWithPhoto({ url: photo }, { caption: `Name - ${name}\nAge - ${age}\nCity - ${city}`, ...viewProfileButton });
@@ -65,27 +67,32 @@ export class MenuSceneGenerator {
             }
         });
         view.on('text', async (ctx: any) => {
-            switch (ctx.message.text) {
-                case constant.BUTTON_TEXT.view_like:
-                    await DatabaseHelper.newLike({ userId: ctx.chat.id, memberId: ctx.session.memberId });
-                    ctx.telegram.sendMessage(ctx.session.memberId, constant.SCENES_TEXT.view_like);
-                    await DatabaseHelper.pushHistory({ ctx: ctx, memberId: ctx.session.memberId });
-                    await ctx.scene.enter('view');
-                    break;
-                case constant.BUTTON_TEXT.view_message:
-                    await DatabaseHelper.pushHistory({ ctx: ctx, memberId: ctx.session.memberId });
-                    await ctx.scene.enter('viewmessage');
-                    break;
-                case constant.BUTTON_TEXT.view_unlike:
-                    await DatabaseHelper.pushHistory({ ctx: ctx, memberId: ctx.session.memberId });
-                    await ctx.scene.enter('view');
-                    break;
-                case constant.BUTTON_TEXT.return_menu:
-                    await ctx.scene.enter('main');
-                    break;
-                default:
-                    await ctx.reply(constant.SCENES_TEXT.register_wrong_asnwer);
-                    break;
+            try {
+                switch (ctx.message.text) {
+                    case constant.BUTTON_TEXT.view_like:
+                        await DatabaseHelper.newLike({ userId: ctx.chat.id, memberId: ctx.session.memberId });
+                        await ctx.telegram.sendMessage(ctx.session.memberId, constant.SCENES_TEXT.view_like);
+                        await DatabaseHelper.pushHistory({ ctx: ctx, memberId: ctx.session.memberId });
+                        await ctx.scene.enter('view');
+                        break;
+                    case constant.BUTTON_TEXT.view_message:
+                        await DatabaseHelper.pushHistory({ ctx: ctx, memberId: ctx.session.memberId });
+                        await ctx.scene.enter('viewmessage');
+                        break;
+                    case constant.BUTTON_TEXT.view_unlike:
+                        await DatabaseHelper.pushHistory({ ctx: ctx, memberId: ctx.session.memberId });
+                        await ctx.scene.enter('view');
+                        break;
+                    case constant.BUTTON_TEXT.return_menu:
+                        await ctx.scene.enter('main');
+                        break;
+                    default:
+                        await ctx.reply(constant.SCENES_TEXT.register_wrong_asnwer);
+                        break;
+                }
+            }
+            catch (err) {
+                console.log('error in view', err);
             }
         });
 
@@ -101,7 +108,12 @@ export class MenuSceneGenerator {
 
         view_message.on('text', async (ctx: any) => {
             await DatabaseHelper.newLikeMessage({ userId: ctx.chat.id, memberId: ctx.session.memberId, message: ctx.message.text });
-            ctx.telegram.sendMessage(ctx.session.memberId, constant.SCENES_TEXT.view_like);
+            try {
+                await ctx.telegram.sendMessage(ctx.session.memberId, constant.SCENES_TEXT.view_like);
+            }
+            catch (err) {
+                console.log('error in view message', err);
+            }
             await ctx.scene.enter('view');
         });
 
@@ -121,6 +133,8 @@ export class MenuSceneGenerator {
             });
 
             const { name, age, city, description, photo } = ctx.session;
+
+
 
             if (description != constant.BUTTON_TEXT.skip) {
                 await ctx.replyWithPhoto({ url: photo }, { caption: `Name - ${name}\nAge - ${age}\nCity - ${city}\nAbout - ${description}` });
@@ -204,9 +218,15 @@ export class MenuSceneGenerator {
             const link_user = `<a href="tg://user?id=${userId}">${name}</a>`
 
             if (ctx.message.text === constant.BUTTON_TEXT.view_like) {
-                await ctx.telegram.sendMessage(userId, constant.SCENES_TEXT.likes_message + link_member, {
-                    parse_mode: 'HTML',
-                });
+                try {
+                    await ctx.telegram.sendMessage(userId, constant.SCENES_TEXT.likes_message + link_member, {
+                        parse_mode: 'HTML',
+                    });
+                }
+                catch (err) {
+                    console.log('error on give like', err);
+                }
+
                 await ctx.reply(constant.SCENES_TEXT.likes_message_user + link_user, {
                     parse_mode: 'HTML',
                 });

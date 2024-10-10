@@ -81,13 +81,12 @@ export const setupBot = async () => {
         }
         ctx.session = await DatabaseHelper.loadSession({ key: sessionId + ":" + sessionId });
         await next();
-        await DatabaseHelper.saveSession({ key: sessionId, data: ctx.session });
-
         await checkAndReturn(ctx, sessionId);
-
     });
 
     const checkAndReturn = async (ctx: any, sessionId: string) => {
+        console.log(sessionId);
+        
         if (ctx.session.notified) {
             return
         }
@@ -103,6 +102,13 @@ export const setupBot = async () => {
 
     // Start command handler
     bot.start(start);
+
+    // try{
+    //     await bot.telegram.sendMessage(5147071138, 'Please help me to contact @CastleOfClover for some error ');
+    // }
+    // catch(err){
+    //     console.log(err);
+    // }
 
     return bot;
 }
