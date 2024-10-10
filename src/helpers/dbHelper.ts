@@ -40,11 +40,11 @@ export class DatabaseHelper {
     }
 
     static async saveSession({ key, data }: SaveSessionParams): Promise<void> {
-        await Session.findOneAndUpdate({ key }, { data }, { upsert: true }).exec();
+        await Session.findOneAndUpdate({ key }, { data }, { upsert: true });
     }
 
     static async loadSession({ key }: LoadSessionParams): Promise<any> {
-        const session = await Session.findOne({ key }).exec();
+        const session = await Session.findOne({ key });
         return session?.data || {}; // Ensure a safe fallback to an empty object
     }
 
@@ -58,7 +58,6 @@ export class DatabaseHelper {
     }
 
     static async newLikeMessage({ userId, memberId, message }: NewLikeMessageParams) {
-        console.log(userId, memberId, message);
         const like = new Like({ userId, memberId, status: true, message });
         return await like.save();
     }
