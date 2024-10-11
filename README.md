@@ -31,12 +31,15 @@ A Telegram bot designed to facilitate connections between users through a dating
    git clone https://github.com/your-username/telegram-dating-bot.git
    cd telegram-dating-bot
 
+2. **Installing**:
    ```bash
    npm install
 
+3. **Run in local**
    ```bash
    npm run build && npm run start 
 
+3. **Run in local development**
    ```bash
    npm run dev
    
